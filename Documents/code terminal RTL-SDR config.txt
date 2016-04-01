@@ -18,3 +18,9 @@
 
     sudo rtl_fm -M wbfm -f 93.5M | play -32k -t raw e s -b
  6 -c 1 -V1 -
+
+en raspberry
+sudo nano /boot/config.txt
+agregar:
+framebuffer_depth=32
+framebuffer_ignore_alpha=1
