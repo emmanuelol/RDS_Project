@@ -10,6 +10,9 @@
     sudo make install
     sudo ldconfig
 
+    cd ~
+   sudo cp ./rtl-sdr/rtl-sdr.rules /etc/udev/rules.d/
+    sudo reboot
     sudo pip install pyrtlsdr
     sudo rtl_test -t
 
