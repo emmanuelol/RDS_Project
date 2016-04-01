@@ -3,11 +3,10 @@
 # Gnuradio Python Flow Graph
 # Title: Tutorial 1
 # Author: Tutorial 1
-# Generated: Wed Mar 30 09:52:43 2016
+# Generated: Wed Mar 30 17:38:24 2016
 ##################################################
 
 from gnuradio import analog
-from gnuradio import audio
 from gnuradio import blocks
 from gnuradio import eng_notation
 from gnuradio import gr
@@ -67,7 +66,6 @@ class top_block(grc_wxgui.top_block_gui):
         )
         self.Add(self.wxgui_fftsink2_0.win)
         self.blocks_throttle_0 = blocks.throttle(gr.sizeof_float*1, samp_rate)
-        self.audio_sink_0 = audio.sink(samp_rate, "", True)
         self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, 1000, 0.5, 0)
 
         ##################################################
@@ -75,7 +73,6 @@ class top_block(grc_wxgui.top_block_gui):
         ##################################################
         self.connect((self.analog_sig_source_x_0, 0), (self.blocks_throttle_0, 0))
         self.connect((self.blocks_throttle_0, 0), (self.wxgui_scopesink2_0, 0))
-        self.connect((self.blocks_throttle_0, 0), (self.audio_sink_0, 0))
         self.connect((self.blocks_throttle_0, 0), (self.wxgui_fftsink2_0, 0))
 
 
@@ -88,8 +85,8 @@ class top_block(grc_wxgui.top_block_gui):
         self.samp_rate = samp_rate
         self.wxgui_scopesink2_0.set_sample_rate(self.samp_rate)
         self.blocks_throttle_0.set_sample_rate(self.samp_rate)
-        self.wxgui_fftsink2_0.set_sample_rate(self.samp_rate)
         self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
+        self.wxgui_fftsink2_0.set_sample_rate(self.samp_rate)
 
 if __name__ == '__main__':
     import ctypes

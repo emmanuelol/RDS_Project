@@ -1,0 +1,17 @@
+    sudo apt-get update
+    sudo apt-get install cmake build-essential python-pip libusb-1.0-0-dev python-numpy git
+    cd ~
+    git clone git://git.osmocom.org/rtl-sdr.git
+    cd rtl-sdr
+    mkdir build
+    cd build
+    cmake ../ -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON
+    make
+    sudo make install
+    sudo ldconfig
+
+    sudo pip install pyrtlsdr
+    sudo rtl_test -t
+
+    sudo rtl_fm -M wbfm -f 93.5M | play -32k -t raw e s -b
+ 6 -c 1 -V1 -
