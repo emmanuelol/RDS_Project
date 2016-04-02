@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 ##################################################
 # Gnuradio Python Flow Graph
-# Title: Top Block
-# Generated: Sat Apr  2 13:06:30 2016
+# Title: fmReceiver2
+# Generated: Sat Apr  2 14:08:58 2016
 ##################################################
 
 from gnuradio import analog
@@ -22,10 +22,10 @@ from optparse import OptionParser
 import osmosdr
 import wx
 
-class top_block(grc_wxgui.top_block_gui):
+class fmReceiver2(grc_wxgui.top_block_gui):
 
     def __init__(self):
-        grc_wxgui.top_block_gui.__init__(self, title="Top Block")
+        grc_wxgui.top_block_gui.__init__(self, title="fmReceiver2")
         _icon_path = "/usr/share/icons/hicolor/32x32/apps/gnuradio-grc.png"
         self.SetIcon(wx.Icon(_icon_path, wx.BITMAP_TYPE_ANY))
 
@@ -33,41 +33,12 @@ class top_block(grc_wxgui.top_block_gui):
         # Variables
         ##################################################
         self.samp_rep = samp_rep = 44.1e3
-        self.samp_rate = samp_rate = 28e5
+        self.samp_rate = samp_rate = 2e6
         self.freq = freq = 99.3e6
 
         ##################################################
         # Blocks
         ##################################################
-        self.wxgui_waterfallsink2_0 = waterfallsink2.waterfall_sink_f(
-        	self.GetWin(),
-        	baseband_freq=0,
-        	dynamic_range=100,
-        	ref_level=0,
-        	ref_scale=2.0,
-        	sample_rate=samp_rate,
-        	fft_size=512,
-        	fft_rate=15,
-        	average=False,
-        	avg_alpha=None,
-        	title="Waterfall Plot",
-        )
-        self.Add(self.wxgui_waterfallsink2_0.win)
-        self.rtlsdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + "" )
-        self.rtlsdr_source_0.set_sample_rate(samp_rate)
-        self.rtlsdr_source_0.set_center_freq(100e6, 0)
-        self.rtlsdr_source_0.set_freq_corr(0, 0)
-        self.rtlsdr_source_0.set_dc_offset_mode(0, 0)
-        self.rtlsdr_source_0.set_iq_balance_mode(0, 0)
-        self.rtlsdr_source_0.set_gain_mode(0, 0)
-        self.rtlsdr_source_0.set_gain(10, 0)
-        self.rtlsdr_source_0.set_if_gain(20, 0)
-        self.rtlsdr_source_0.set_bb_gain(20, 0)
-        self.rtlsdr_source_0.set_antenna("", 0)
-        self.rtlsdr_source_0.set_bandwidth(0, 0)
-          
-        self.low_pass_filter_0 = filter.fir_filter_ccf(1, firdes.low_pass(
-        	1, samp_rate, 75e3, 150e3, firdes.WIN_HAMMING, 6.76))
         _freq_sizer = wx.BoxSizer(wx.VERTICAL)
         self._freq_text_box = forms.text_box(
         	parent=self.GetWin(),
@@ -91,12 +62,41 @@ class top_block(grc_wxgui.top_block_gui):
         	proportion=1,
         )
         self.Add(_freq_sizer)
+        self.wxgui_waterfallsink2_0 = waterfallsink2.waterfall_sink_f(
+        	self.GetWin(),
+        	baseband_freq=0,
+        	dynamic_range=100,
+        	ref_level=0,
+        	ref_scale=2.0,
+        	sample_rate=samp_rate,
+        	fft_size=512,
+        	fft_rate=15,
+        	average=False,
+        	avg_alpha=None,
+        	title="Waterfall Plot",
+        )
+        self.Add(self.wxgui_waterfallsink2_0.win)
+        self.rtlsdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + "" )
+        self.rtlsdr_source_0.set_sample_rate(samp_rate)
+        self.rtlsdr_source_0.set_center_freq(freq, 0)
+        self.rtlsdr_source_0.set_freq_corr(0, 0)
+        self.rtlsdr_source_0.set_dc_offset_mode(0, 0)
+        self.rtlsdr_source_0.set_iq_balance_mode(0, 0)
+        self.rtlsdr_source_0.set_gain_mode(0, 0)
+        self.rtlsdr_source_0.set_gain(10, 0)
+        self.rtlsdr_source_0.set_if_gain(20, 0)
+        self.rtlsdr_source_0.set_bb_gain(20, 0)
+        self.rtlsdr_source_0.set_antenna("", 0)
+        self.rtlsdr_source_0.set_bandwidth(0, 0)
+          
+        self.low_pass_filter_0 = filter.fir_filter_ccf(1, firdes.low_pass(
+        	1, samp_rate, 75e3, 150e3, firdes.WIN_HAMMING, 6.76))
         self.fractional_interpolator_xx_1 = filter.fractional_interpolator_ff(0, 4)
         self.fractional_interpolator_xx_0 = filter.fractional_interpolator_cc(0, 3.968)
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vff((4, ))
         self.audio_sink_0 = audio.sink(44100, "", True)
         self.analog_wfm_rcv_0 = analog.wfm_rcv(
-        	quad_rate=176.4e3,
+        	quad_rate=5e5,
         	audio_decimation=4,
         )
         self.analog_fm_deemph_0 = analog.fm_deemph(fs=samp_rep, tau=50e-6)
@@ -127,9 +127,9 @@ class top_block(grc_wxgui.top_block_gui):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.rtlsdr_source_0.set_sample_rate(self.samp_rate)
         self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 75e3, 150e3, firdes.WIN_HAMMING, 6.76))
         self.wxgui_waterfallsink2_0.set_sample_rate(self.samp_rate)
+        self.rtlsdr_source_0.set_sample_rate(self.samp_rate)
 
     def get_freq(self):
         return self.freq
@@ -138,6 +138,7 @@ class top_block(grc_wxgui.top_block_gui):
         self.freq = freq
         self._freq_slider.set_value(self.freq)
         self._freq_text_box.set_value(self.freq)
+        self.rtlsdr_source_0.set_center_freq(self.freq, 0)
 
 if __name__ == '__main__':
     import ctypes
@@ -150,7 +151,7 @@ if __name__ == '__main__':
             print "Warning: failed to XInitThreads()"
     parser = OptionParser(option_class=eng_option, usage="%prog: [options]")
     (options, args) = parser.parse_args()
-    tb = top_block()
+    tb = fmReceiver2()
     tb.Start(True)
     tb.Wait()
 
