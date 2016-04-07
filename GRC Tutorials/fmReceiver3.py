@@ -1,9 +1,20 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 ##################################################
-# Gnuradio Python Flow Graph
+# GNU Radio Python Flow Graph
 # Title: fmReceiver3
-# Generated: Sat Apr  2 14:19:20 2016
+# Generated: Tue Apr  5 12:54:17 2016
 ##################################################
+
+if __name__ == '__main__':
+    import ctypes
+    import sys
+    if sys.platform.startswith('linux'):
+        try:
+            x11 = ctypes.cdll.LoadLibrary('libX11.so')
+            x11.XInitThreads()
+        except:
+            print "Warning: failed to XInitThreads()"
 
 from gnuradio import analog
 from gnuradio import audio
@@ -21,7 +32,9 @@ from gnuradio.wxgui import waterfallsink2
 from grc_gnuradio import wxgui as grc_wxgui
 from optparse import OptionParser
 import osmosdr
+import time
 import wx
+
 
 class fmReceiver3(grc_wxgui.top_block_gui):
 
@@ -90,18 +103,18 @@ class fmReceiver3(grc_wxgui.top_block_gui):
         	y_axis_label="Counts",
         )
         self.Add(self.wxgui_scopesink2_0.win)
-        self.rtlsdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + "" )
-        self.rtlsdr_source_0.set_sample_rate(samp_rate)
-        self.rtlsdr_source_0.set_center_freq(freq, 0)
-        self.rtlsdr_source_0.set_freq_corr(0, 0)
-        self.rtlsdr_source_0.set_dc_offset_mode(0, 0)
-        self.rtlsdr_source_0.set_iq_balance_mode(0, 0)
-        self.rtlsdr_source_0.set_gain_mode(0, 0)
-        self.rtlsdr_source_0.set_gain(40, 0)
-        self.rtlsdr_source_0.set_if_gain(20, 0)
-        self.rtlsdr_source_0.set_bb_gain(20, 0)
-        self.rtlsdr_source_0.set_antenna("", 0)
-        self.rtlsdr_source_0.set_bandwidth(0, 0)
+        self.rtlsdr_source_1 = osmosdr.source( args="numchan=" + str(1) + " " + "" )
+        self.rtlsdr_source_1.set_sample_rate(samp_rate)
+        self.rtlsdr_source_1.set_center_freq(freq, 0)
+        self.rtlsdr_source_1.set_freq_corr(0, 0)
+        self.rtlsdr_source_1.set_dc_offset_mode(0, 0)
+        self.rtlsdr_source_1.set_iq_balance_mode(0, 0)
+        self.rtlsdr_source_1.set_gain_mode(False, 0)
+        self.rtlsdr_source_1.set_gain(49.2, 0)
+        self.rtlsdr_source_1.set_if_gain(20, 0)
+        self.rtlsdr_source_1.set_bb_gain(20, 0)
+        self.rtlsdr_source_1.set_antenna("", 0)
+        self.rtlsdr_source_1.set_bandwidth(0, 0)
           
         self.rational_resampler_xxx_1 = filter.rational_resampler_fff(
                 interpolation=48,
@@ -131,34 +144,31 @@ class fmReceiver3(grc_wxgui.top_block_gui):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.low_pass_filter_0, 0), (self.analog_wfm_rcv_0, 0))
-        self.connect((self.rational_resampler_xxx_0, 0), (self.low_pass_filter_0, 0))
-        self.connect((self.rtlsdr_source_0, 0), (self.wxgui_waterfallsink2_0, 0))
-        self.connect((self.rtlsdr_source_0, 0), (self.rational_resampler_xxx_0, 0))
-        self.connect((self.rational_resampler_xxx_1, 0), (self.audio_sink_0, 0))
-        self.connect((self.analog_wfm_rcv_0, 0), (self.rational_resampler_xxx_1, 0))
-        self.connect((self.analog_wfm_rcv_0, 0), (self.band_pass_filter_0, 0))
-        self.connect((self.analog_wfm_rcv_0, 0), (self.band_pass_filter_0_0, 0))
-        self.connect((self.band_pass_filter_0, 0), (self.blocks_multiply_xx_0, 0))
-        self.connect((self.band_pass_filter_0, 0), (self.blocks_multiply_xx_0, 1))
-        self.connect((self.band_pass_filter_0, 0), (self.blocks_multiply_xx_0, 2))
-        self.connect((self.band_pass_filter_0_0, 0), (self.blocks_multiply_xx_0, 3))
-        self.connect((self.blocks_multiply_xx_0, 0), (self.wxgui_scopesink2_0, 0))
-
-
-# QT sink close method reimplementation
+        self.connect((self.analog_wfm_rcv_0, 0), (self.band_pass_filter_0, 0))    
+        self.connect((self.analog_wfm_rcv_0, 0), (self.band_pass_filter_0_0, 0))    
+        self.connect((self.analog_wfm_rcv_0, 0), (self.rational_resampler_xxx_1, 0))    
+        self.connect((self.band_pass_filter_0, 0), (self.blocks_multiply_xx_0, 0))    
+        self.connect((self.band_pass_filter_0, 0), (self.blocks_multiply_xx_0, 1))    
+        self.connect((self.band_pass_filter_0, 0), (self.blocks_multiply_xx_0, 2))    
+        self.connect((self.band_pass_filter_0_0, 0), (self.blocks_multiply_xx_0, 3))    
+        self.connect((self.blocks_multiply_xx_0, 0), (self.wxgui_scopesink2_0, 0))    
+        self.connect((self.low_pass_filter_0, 0), (self.analog_wfm_rcv_0, 0))    
+        self.connect((self.rational_resampler_xxx_0, 0), (self.low_pass_filter_0, 0))    
+        self.connect((self.rational_resampler_xxx_1, 0), (self.audio_sink_0, 0))    
+        self.connect((self.rtlsdr_source_1, 0), (self.rational_resampler_xxx_0, 0))    
+        self.connect((self.rtlsdr_source_1, 0), (self.wxgui_waterfallsink2_0, 0))    
 
     def get_samp_rate(self):
         return self.samp_rate
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.wxgui_waterfallsink2_0.set_sample_rate(self.samp_rate)
         self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 1e5, 1e6, firdes.WIN_HAMMING, 6.76))
-        self.rtlsdr_source_0.set_sample_rate(self.samp_rate)
         self.band_pass_filter_0_0.set_taps(firdes.band_pass(1, self.samp_rate, 54e3, 60e3, 3e3, firdes.WIN_HAMMING, 6.76))
-        self.wxgui_scopesink2_0.set_sample_rate(self.samp_rate)
         self.band_pass_filter_0.set_taps(firdes.band_pass(1, self.samp_rate, 18.5e3, 19.5e3, 3e3, firdes.WIN_HAMMING, 6.76))
+        self.wxgui_scopesink2_0.set_sample_rate(self.samp_rate)
+        self.wxgui_waterfallsink2_0.set_sample_rate(self.samp_rate)
+        self.rtlsdr_source_1.set_sample_rate(self.samp_rate)
 
     def get_freq(self):
         return self.freq
@@ -167,20 +177,15 @@ class fmReceiver3(grc_wxgui.top_block_gui):
         self.freq = freq
         self._freq_slider.set_value(self.freq)
         self._freq_text_box.set_value(self.freq)
-        self.rtlsdr_source_0.set_center_freq(self.freq, 0)
+        self.rtlsdr_source_1.set_center_freq(self.freq, 0)
 
-if __name__ == '__main__':
-    import ctypes
-    import os
-    if os.name == 'posix':
-        try:
-            x11 = ctypes.cdll.LoadLibrary('libX11.so')
-            x11.XInitThreads()
-        except:
-            print "Warning: failed to XInitThreads()"
-    parser = OptionParser(option_class=eng_option, usage="%prog: [options]")
-    (options, args) = parser.parse_args()
-    tb = fmReceiver3()
+
+def main(top_block_cls=fmReceiver3, options=None):
+
+    tb = top_block_cls()
     tb.Start(True)
     tb.Wait()
 
+
+if __name__ == '__main__':
+    main()
