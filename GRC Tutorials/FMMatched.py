@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: FMReceiverSignal
-# Author: Emmanuel Ortiz López
-# Generated: Mon Apr 11 15:12:30 2016
+# Title: FMMatched
+# Author: Emmanuel Ortiz
+# Generated: Sat Apr  9 20:56:07 2016
 ##################################################
 
 if __name__ == '__main__':
@@ -42,10 +42,10 @@ import time
 import wx
 
 
-class FMReceiverSignal(grc_wxgui.top_block_gui):
+class FMMatched(grc_wxgui.top_block_gui):
 
     def __init__(self):
-        grc_wxgui.top_block_gui.__init__(self, title="FMReceiverSignal")
+        grc_wxgui.top_block_gui.__init__(self, title="FMMatched")
         _icon_path = "/usr/share/icons/hicolor/32x32/apps/gnuradio-grc.png"
         self.SetIcon(wx.Icon(_icon_path, wx.BITMAP_TYPE_ANY))
 
@@ -97,6 +97,7 @@ class FMReceiverSignal(grc_wxgui.top_block_gui):
         self.nb.AddPage(grc_wxgui.Panel(self.nb), "RDS")
         self.nb.AddPage(grc_wxgui.Panel(self.nb), "Waterfall")
         self.nb.AddPage(grc_wxgui.Panel(self.nb), "RDS constellation")
+        self.nb.AddPage(grc_wxgui.Panel(self.nb), "eye")
         self.GridAdd(self.nb, 2, 0, 1, 2)
         _gain_sizer = wx.BoxSizer(wx.VERTICAL)
         self._gain_text_box = forms.text_box(
@@ -172,6 +173,20 @@ class FMReceiverSignal(grc_wxgui.top_block_gui):
         	y_axis_label="Counts",
         )
         self.nb.GetPage(4).Add(self.wxgui_scopesink2_1.win)
+        self.wxgui_scopesink2_0 = scopesink2.scope_sink_c(
+        	self.nb.GetPage(5).GetWin(),
+        	title="eye",
+        	sample_rate=samp_rate,
+        	v_scale=0,
+        	v_offset=0,
+        	t_scale=0,
+        	ac_couple=False,
+        	xy_mode=True,
+        	num_inputs=1,
+        	trig_mode=wxgui.TRIG_MODE_AUTO,
+        	y_axis_label="Counts",
+        )
+        self.nb.GetPage(5).Add(self.wxgui_scopesink2_0.win)
         self.wxgui_fftsink2_0_0_0_1_0_1 = fftsink2.fft_sink_c(
         	self.nb.GetPage(2).GetWin(),
         	baseband_freq=0,
@@ -233,6 +248,8 @@ class FMReceiverSignal(grc_wxgui.top_block_gui):
         self.rtlsdr_source_0.set_antenna("", 0)
         self.rtlsdr_source_0.set_bandwidth(0, 0)
           
+        self.root_raised_cosine_filter_1 = filter.fir_filter_ccf(1, firdes.root_raised_cosine(
+        	1, samp_rate, 1.0, 0.35, 11))
         self.root_raised_cosine_filter_0 = filter.fir_filter_ccf(1, firdes.root_raised_cosine(
         	1, samp_rate/bb_decim/audio_decim, 2375, 1, 100))
         self.rational_resampler_xxx_1 = filter.rational_resampler_fff(
@@ -241,7 +258,7 @@ class FMReceiverSignal(grc_wxgui.top_block_gui):
                 taps=None,
                 fractional_bw=None,
         )
-        self.gr_rds_parser_0 = rds.parser(True, False, 1)
+        self.gr_rds_parser_0 = rds.parser(True, False, 0)
         self.gr_rds_panel_0 = rds.rdsPanel(freq, self.GetWin())
         self.Add(self.gr_rds_panel_0.panel)
         self.gr_rds_decoder_0 = rds.decoder(False, False)
@@ -274,6 +291,7 @@ class FMReceiverSignal(grc_wxgui.top_block_gui):
         self.connect((self.digital_binary_slicer_fb_0, 0), (self.blocks_keep_one_in_n_0, 0))    
         self.connect((self.digital_diff_decoder_bb_0, 0), (self.gr_rds_decoder_0, 0))    
         self.connect((self.digital_mpsk_receiver_cc_0, 0), (self.blocks_complex_to_real_0, 0))    
+        self.connect((self.digital_mpsk_receiver_cc_0, 0), (self.root_raised_cosine_filter_1, 0))    
         self.connect((self.digital_mpsk_receiver_cc_0, 0), (self.wxgui_scopesink2_1, 0))    
         self.connect((self.freq_xlating_fir_filter_xxx_0, 0), (self.analog_wfm_rcv_0, 0))    
         self.connect((self.freq_xlating_fir_filter_xxx_0, 0), (self.wxgui_fftsink2_0, 0))    
@@ -281,6 +299,7 @@ class FMReceiverSignal(grc_wxgui.top_block_gui):
         self.connect((self.freq_xlating_fir_filter_xxx_1, 0), (self.wxgui_fftsink2_0_0_0_1_0_1, 0))    
         self.connect((self.rational_resampler_xxx_1, 0), (self.audio_sink_0, 0))    
         self.connect((self.root_raised_cosine_filter_0, 0), (self.digital_mpsk_receiver_cc_0, 0))    
+        self.connect((self.root_raised_cosine_filter_1, 0), (self.wxgui_scopesink2_0, 0))    
         self.connect((self.rtlsdr_source_0, 0), (self.freq_xlating_fir_filter_xxx_0, 0))    
 
     def get_samp_rate(self):
@@ -294,6 +313,8 @@ class FMReceiverSignal(grc_wxgui.top_block_gui):
         self.root_raised_cosine_filter_0.set_taps(firdes.root_raised_cosine(1, self.samp_rate/self.bb_decim/self.audio_decim, 2375, 1, 100))
         self.rtlsdr_source_0.set_sample_rate(self.samp_rate)
         self.wxgui_fftsink2_0.set_sample_rate(self.samp_rate)
+        self.root_raised_cosine_filter_1.set_taps(firdes.root_raised_cosine(1, self.samp_rate, 1.0, 0.35, 11))
+        self.wxgui_scopesink2_0.set_sample_rate(self.samp_rate)
 
     def get_bb_decim(self):
         return self.bb_decim
@@ -317,9 +338,9 @@ class FMReceiverSignal(grc_wxgui.top_block_gui):
 
     def set_freq(self, freq):
         self.freq = freq
+        self.set_freq_tune(self.freq- self.freq_offset)
         self._freq_slider.set_value(self.freq)
         self._freq_text_box.set_value(self.freq)
-        self.set_freq_tune(self.freq- self.freq_offset)
         self.gr_rds_panel_0.set_frequency(self.freq);
 
     def get_baseband_rate(self):
@@ -387,7 +408,7 @@ class FMReceiverSignal(grc_wxgui.top_block_gui):
         self.audio_decim_rate = audio_decim_rate
 
 
-def main(top_block_cls=FMReceiverSignal, options=None):
+def main(top_block_cls=FMMatched, options=None):
 
     tb = top_block_cls()
     tb.Start(True)
