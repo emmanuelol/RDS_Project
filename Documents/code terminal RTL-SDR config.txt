@@ -1,0 +1,49 @@
+# GNU radio ubuntu
+
+mkdir gnuradio
+cd gnuradio
+wget http://www.sbrac.org/files/build-gnuradio
+chmod a+x build-gnuradio
+./build-gnuradio --verbose          # default is latest 3.7
+# raspberry 
+
+ sudo apt-get install git-core
+ sudo apt-get install git
+ sudo apt-get install cmake
+ sudo apt-get install libusb-1.0-0-de    
+ sudo apt-get install build-essentia
+ sudo apt-get update
+
+ cd ~
+ git clone git://git.osmocom.org/rtl-sdr.git
+ cd rtl-sdr
+ mkdir build
+ cd build
+ cmake ../ -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON
+ make
+ sudo make install
+ sudo ldconfig
+sudo cp ./rtl-sdr/rtl-sdr.rules /etc/udev/rules.d/
+  sudo reboot
+cd ~
+sudo nano /etc/modprobe.d/raspi-blacklist.conf
+
+#then insert the following lines
+
+blacklist rtl2832
+blacklist r820t
+blacklist rtl2830
+blacklist dvb_usb_rtl28xxu
+
+
+
+#test en terminal
+ sudo rtl_test -t
+
+    sudo rtl_fm -M wbfm -f 99.3M | play -r 32k -t raw -e s -b 16 -c 1 -V1 -
+
+# en algunas veces en raspberry
+sudo nano /boot/config.txt
+#agregar:
+framebuffer_depth=32
+framebuffer_ignore_alpha=1

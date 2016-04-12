@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Playing station="KNAB-FM" RenderedAt="2007-06-14T17:13:25-04:00">
+      <item type="MUS">
+             <DateTime>Thu 05:13PM</DateTime>
+             <StartedAt>2007-06-14T17:13:25-04:00</StartedAt>
+             <Length>000243</Length>
+             <Cart>MUSC1023</Cart>
+             <Artist>The Rolling Stones</Artist>
+             <SongTitle>Paint It Black</SongTitle>
+             <album>Best of The Stones</album>
+             <musicid>ISCI12122-R21</musicid>
+             <Year>1967</YEAR>
+             <composer></composer>
+             <NextArtist>Creedence Clearwater Revival</NextArtist>
+             <NextTitle>Proud Mary</NextTitle>
+             <NextAlbum>Willy and the Poor Boys</NextAlbum>
+             <URL>http://www.ccr.com/willy.htm</URL>
+             <Graphic></Graphic>
+             <Media></Media>
+      </item>
+</playing>
+             
